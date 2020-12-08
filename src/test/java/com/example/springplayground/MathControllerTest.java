@@ -6,7 +6,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -55,13 +55,66 @@ public class MathControllerTest {
                 .andExpect(content().string("30 / 5 = 6"));
 
     }
+//    @Test
+//    public void sumsMultipleNumbers() throws Exception {
+//        this.mvc.perform(get("/math/sum?n=4&n=5&n=6").accept(MediaType.TEXT_PLAIN))
+//                .andExpect(status().isOk())
+//                .andExpect(content().string("4 + 5 + 6 = 15"));
+//
+//    }
+//
     @Test
-    public void sumsMultipleNumbers() throws Exception {
-        this.mvc.perform(get("/math//math/sum?n=4&n=5&n=6").accept(MediaType.TEXT_PLAIN))
+    public void returnVolOnPost() throws Exception {
+        this.mvc.perform(post("/math/volume/3/4/5"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("4 + 5 + 6 = 15"));
-
+                .andExpect(content().string("The volume of a 3x4x5 rectangle is 60"));
 
     }
+    @Test
+    public void returnVolOnGet() throws Exception {
+        this.mvc.perform(get("/math/volume/3/4/5"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("The volume of a 3x4x5 rectangle is 60"));
+
+    }
+    @Test
+    public void returnVolOnPatch() throws Exception {
+        this.mvc.perform(patch("/math/volume/3/4/5"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("The volume of a 3x4x5 rectangle is 60"));
+
+    }
+
+    @Test
+    public void getDataFromFormRect() throws Exception {
+        this.mvc.perform(post("/math/area")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("type","rectangle" )
+                .param("width", "7" )
+                .param("height","4" )
+                )
+                .andExpect(status().isOk())
+                .andExpect(content().string("Area of a 4x7 rectangle is 28"));
+    }
+    @Test
+    public void getDataFromFormCircle() throws Exception {
+        this.mvc.perform(post("/math/area")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("type","circle" )
+                .param("radius", "4" ))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Area of a circle with a radius of 4 is 50.26548"));
+    }
+    @Test
+    public void getDataFromFormInvalid() throws Exception {
+        this.mvc.perform(post("/math/area")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("type","circle" )
+                .param("radius", "4" )
+                .param("width", "4" ))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Invalid"));
+    }
+
 
 }
