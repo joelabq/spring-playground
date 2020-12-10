@@ -25,6 +25,22 @@ public class LessonsController {
 
         return this.repository.findById(Long.parseLong(id));
     }
+    @PatchMapping("/{id}")
+    public Lesson patchId(@PathVariable String id, @RequestBody Lesson lesson){
+        Lesson updated = new Lesson();
+
+        Optional<Lesson> updateThis = this.repository.findById(Long.parseLong(id));
+        updateThis.ifPresent(record -> {
+            record.setTitle(lesson.getTitle());
+            record.setDeliveredOn(lesson.getDeliveredOn());
+        });
+        if (updateThis.isPresent()){
+            updated = updateThis.get();
+        }
+
+       return this.repository.save(updated);
+
+    }
 
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable String id) {
