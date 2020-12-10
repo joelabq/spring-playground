@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class Simplify {
 
 
-    @PostMapping(value = "/activities/simplify" produces="application/vnd.galvanize.detailed+json" )
-    @JsonView(Views.DetailView.class)
+//    @PostMapping(value = "/activities/simplify" produces="application/vnd.galvanize.detailed+json" )
+//    @JsonView(Views.DetailView.class)
 
 
 }
