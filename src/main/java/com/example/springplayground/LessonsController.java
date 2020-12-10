@@ -20,6 +20,15 @@ public class LessonsController {
         return this.repository.findAll();
     }
 
+    @GetMapping("/find/{title}")
+    public Lesson getByTitle(@PathVariable String title){
+
+        return this.repository.findByTitle(title);
+
+    }
+
+
+
     @GetMapping("/{id}")
     public Optional<Lesson> getById(@PathVariable String id) {
 

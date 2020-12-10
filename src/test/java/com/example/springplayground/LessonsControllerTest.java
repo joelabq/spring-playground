@@ -121,4 +121,35 @@ public class LessonsControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(expected));
     }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void getByTitle() throws Exception {
+        HashMap<String, Object> data = new HashMap<String,Object>(){
+            {
+                put("title", "something");
+                put("deliveredOn", "2020-01-01");
+            }
+        };
+
+        String json = objMap.writeValueAsString(data);
+
+        MockHttpServletRequestBuilder req = post("/lessons")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        this.mvc.perform(req)
+                .andExpect(status().isOk());
+
+        //String expected = "[{\"id\":2,\"title\":\"something\",\"deliveredOn\":\"2020-01-01\"}]";
+
+        req = get("/lessons/find/something")
+                .contentType(MediaType.APPLICATION_JSON);
+
+        this.mvc.perform(req)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.title", equalTo("something")));
+    }
+
 }
